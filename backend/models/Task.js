@@ -1,0 +1,13 @@
+const mongoose = require("mongoose");
+
+const taskSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    status: { type: String, default: "incomplete" },
+    owner: { type: String, required: true }, // user email
+    sharedWith: [String], // list of emails
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Task", taskSchema);
