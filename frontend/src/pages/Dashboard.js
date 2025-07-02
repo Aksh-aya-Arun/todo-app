@@ -6,43 +6,59 @@ export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
 
+  // ✅ Get user info
   useEffect(() => {
     axios
-      .get("http://localhost:5000/auth/success", { withCredentials: true })
+      .get("https://todo-backend-akshaya.onrender.com/auth/success", {
+        withCredentials: true,
+      })
       .then((res) => setUser(res.data.user))
       .catch(() => (window.location.href = "/"));
   }, []);
 
+  // ✅ Get tasks
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/tasks", { withCredentials: true })
+      .get("https://todo-backend-akshaya.onrender.com/api/tasks", {
+        withCredentials: true,
+      })
       .then((res) => setTasks(res.data));
   }, []);
 
+  // ✅ Add task
   const handleAddTask = () => {
     if (!title) return;
     axios
-      .post("http://localhost:5000/api/tasks", { title }, { withCredentials: true })
+      .post(
+        "https://todo-backend-akshaya.onrender.com/api/tasks",
+        { title },
+        { withCredentials: true }
+      )
       .then((res) => {
         setTasks([res.data.task, ...tasks]);
         setTitle("");
       });
   };
 
+  // ✅ Delete task
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:5000/api/tasks/${id}`, { withCredentials: true })
+      .delete(
+        `https://todo-backend-akshaya.onrender.com/api/tasks/${id}`,
+        { withCredentials: true }
+      )
       .then(() => {
         setTasks(tasks.filter((task) => task._id !== id));
       });
   };
 
+  // ✅ Share task
   const handleShare = (id) => {
     const email = prompt("Enter email to share this task with:");
     if (!email) return;
     axios
       .post(
-        `http://localhost:5000/api/tasks/${id}/share`,
+        `https://todo-backend-akshaya.onrender.com/api/tasks/${id}/share`,
         { email },
         { withCredentials: true }
       )
